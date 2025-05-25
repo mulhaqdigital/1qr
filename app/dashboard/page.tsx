@@ -14,7 +14,7 @@ function randomShortUrl(length = 6) {
   return result;
 }
 
-export default function DashboardPage() {
+export default function Page() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [destinationUrl, setDestinationUrl] = useState("");
