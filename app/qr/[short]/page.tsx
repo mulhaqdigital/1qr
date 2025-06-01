@@ -2,14 +2,7 @@
 import { supabase } from "@/lib/supabaseClient";
 import { redirect } from "next/navigation";
 
-type QRPageProps = {
-  params: {
-    short: string;
-  };
-  searchParams?: { [key: string]: string | string[] | undefined };
-};
-
-export default async function QRRedirectPage({ params }: QRPageProps) {
+export default async function QRRedirectPage({ params }: { params: { short: string } }) {
   const { data } = await supabase
     .from("qr_codes")
     .select("destination_url")
