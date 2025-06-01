@@ -17,11 +17,6 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
-        <style>{`
-          body {
-            font-family: 'Montserrat', Arial, Helvetica, sans-serif;
-          }
-        `}</style>
       </head>
       <body>
         <NavBar />

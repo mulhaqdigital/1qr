@@ -74,7 +74,7 @@ export default function Home() {
             Create QR codes that never expire with redirect URLs you can update anytime. Perfect for business, marketing, events, and more.
           </p>
           <div style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap" }}>
-            <a
+          <a
               href="/dashboard"
               style={{
                 display: "inline-flex",
