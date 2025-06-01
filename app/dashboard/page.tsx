@@ -73,16 +73,29 @@ export default function Page() {
     setCreating(false);
   }
 
-  if (loading) return <div className="text-center py-8">Loading...</div>;
+  if (loading) return <div>Loading...</div>;
   if (!user) return null;
 
   return (
-    <div className="min-h-[80vh] bg-slate-50 py-8 px-2 sm:px-4">
-      <div className="container max-w-lg mx-auto bg-white rounded-2xl shadow-lg p-4 sm:p-8">
-        <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center">Dashboard</h1>
+    <div style={{ minHeight: "80vh", background: "#f8fafc", padding: "40px 0" }}>
+      <div style={{
+        maxWidth: 700,
+        margin: "0 auto",
+        background: "#fff",
+        borderRadius: 18,
+        boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
+        padding: 36,
+      }}>
+        <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 18, textAlign: "center" }}>Dashboard</h1>
         <form
           onSubmit={handleCreate}
-          className="flex flex-col sm:flex-row gap-3 mb-6 items-stretch"
+          style={{
+            display: "flex",
+            gap: 12,
+            marginBottom: 24,
+            alignItems: "center",
+            flexWrap: "wrap"
+          }}
         >
           <input
             type="url"
@@ -90,24 +103,46 @@ export default function Page() {
             value={destinationUrl}
             onChange={e => setDestinationUrl(e.target.value)}
             required
-            className="flex-1 min-w-0 px-4 py-3 rounded-lg border border-gray-200 text-base outline-none bg-slate-50 focus:ring-2 focus:ring-blue-200"
+            style={{
+              flex: 1,
+              minWidth: 220,
+              padding: "12px 14px",
+              borderRadius: 8,
+              border: "1px solid #e5e7eb",
+              fontSize: 16,
+              outline: "none",
+              background: "#f9fafb"
+            }}
           />
           <button
             type="submit"
             disabled={creating}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg px-6 py-3 text-base shadow transition w-full sm:w-auto"
+            style={{
+              background: "#2563eb",
+              color: "#fff",
+              fontWeight: 600,
+              border: "none",
+              borderRadius: 8,
+              padding: "12px 28px",
+              fontSize: 17,
+              cursor: "pointer",
+              boxShadow: "0 2px 8px rgba(37,99,235,0.08)",
+              transition: "background 0.2s"
+            }}
+            onMouseOver={e => (e.currentTarget.style.background = "#1d4ed8")}
+            onMouseOut={e => (e.currentTarget.style.background = "#2563eb")}
           >
             {creating ? "Creating..." : "Create QR"}
           </button>
         </form>
-        {error && <div className="text-rose-600 text-sm text-center mb-4">{error}</div>}
+        {error && <div style={{ color: "#e11d48", fontSize: 15, textAlign: "center", marginBottom: 16 }}>{error}</div>}
         <div>
           {loadingQrs ? (
-            <div className="text-center text-gray-500 py-8">Loading QR codes...</div>
+            <div>Loading QR codes...</div>
           ) : qrCodes.length === 0 ? (
-            <div className="text-center text-gray-400 py-8">No QR codes yet.</div>
+            <div style={{ textAlign: "center", color: "#888" }}>No QR codes yet.</div>
           ) : (
-            <div className="flex flex-col gap-4">
+            <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
               {qrCodes.map(qr => (
                 <QRCodeItem key={qr.id} qr={qr} />
               ))}
@@ -158,6 +193,7 @@ function QRCodeItem({ qr }: { qr: any }) {
 
   async function handleDownload() {
     setDownloading(true);
+    // Create a canvas, draw QR, then serial number below
     const img = new window.Image();
     img.src = qrImg;
     img.onload = () => {
@@ -184,42 +220,87 @@ function QRCodeItem({ qr }: { qr: any }) {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-4 border border-gray-200 rounded-xl bg-slate-50 p-4 shadow-sm relative w-full">
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 18,
+        border: "1px solid #e5e7eb",
+        borderRadius: 14,
+        background: "#f9fafb",
+        padding: 18,
+        boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+        position: "relative"
+      }}
+    >
       {qrImg && (
-        <img src={qrImg} alt="QR" className="w-24 h-24 rounded bg-white object-cover mb-2 sm:mb-0" />
+        <img src={qrImg} alt="QR" style={{ width: 96, height: 96, borderRadius: 8, background: "#fff" }} />
       )}
-      <div className="flex-1 w-full">
-        <div className="break-all">
+      <div style={{ flex: 1 }}>
+        <div>
           <b>Short URL:</b>{" "}
-          <a href={`/qr/${qr.short_url}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline break-all">
-            {typeof window !== "undefined" ? window.location.origin : ""}/qr/{qr.short_url}
+          <a href={`/qr/${qr.short_url}`} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>
+            {window.location.origin}/qr/{qr.short_url}
           </a>
         </div>
-        <div className="break-all">
+        <div>
           <b>Destination:</b> {qr.destination_url}
         </div>
         <div>
           <b>Serial #:</b> {qr.serial_number}
         </div>
       </div>
-      <div className="flex flex-row sm:flex-col gap-2 w-full sm:w-auto mt-2 sm:mt-0">
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         <button
           onClick={() => setShowEdit(true)}
-          className="bg-slate-100 text-gray-800 rounded px-4 py-2 font-medium text-sm hover:bg-slate-200 transition w-full sm:w-auto"
+          style={{
+            background: "#f1f5f9",
+            color: "#222",
+            border: "none",
+            borderRadius: 6,
+            padding: "7px 16px",
+            fontWeight: 500,
+            cursor: "pointer",
+            fontSize: 15,
+            marginBottom: 2,
+            transition: "background 0.2s"
+          }}
         >
           Edit
         </button>
         <button
           onClick={handleDelete}
           disabled={deleting}
-          className="bg-rose-100 text-rose-700 rounded px-4 py-2 font-medium text-sm hover:bg-rose-200 transition w-full sm:w-auto disabled:opacity-60 disabled:cursor-not-allowed"
+          style={{
+            background: "#fee2e2",
+            color: "#b91c1c",
+            border: "none",
+            borderRadius: 6,
+            padding: "7px 16px",
+            fontWeight: 500,
+            cursor: deleting ? "not-allowed" : "pointer",
+            fontSize: 15,
+            marginBottom: 2,
+            transition: "background 0.2s"
+          }}
         >
           {deleting ? "Deleting..." : "Delete"}
         </button>
         <button
           onClick={handleDownload}
           disabled={downloading}
-          className="bg-slate-100 text-gray-800 rounded px-4 py-2 font-medium text-sm hover:bg-slate-200 transition w-full sm:w-auto disabled:opacity-60 disabled:cursor-not-allowed"
+          style={{
+            background: "#f1f5f9",
+            color: "#222",
+            border: "none",
+            borderRadius: 6,
+            padding: "7px 16px",
+            fontWeight: 500,
+            cursor: downloading ? "not-allowed" : "pointer",
+            fontSize: 15,
+            marginBottom: 2,
+            transition: "background 0.2s"
+          }}
         >
           {downloading ? "Downloading..." : "Download PNG"}
         </button>
@@ -227,38 +308,98 @@ function QRCodeItem({ qr }: { qr: any }) {
           href={qr.destination_url}
           target="_blank"
           rel="noopener noreferrer"
-          className="bg-blue-600 hover:bg-blue-700 text-white rounded px-4 py-2 font-medium text-sm text-center transition w-full sm:w-auto"
+          style={{
+            background: "#2563eb",
+            color: "#fff",
+            borderRadius: 6,
+            padding: "7px 16px",
+            fontWeight: 500,
+            textAlign: "center",
+            textDecoration: "none",
+            fontSize: 15,
+            transition: "background 0.2s"
+          }}
+          onMouseOver={e => (e.currentTarget.style.background = "#1d4ed8")}
+          onMouseOut={e => (e.currentTarget.style.background = "#2563eb")}
         >
           Open Redirect
         </a>
       </div>
       {showEdit && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            background: "rgba(0,0,0,0.4)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 50
+          }}
+        >
           <form
             onSubmit={handleEdit}
-            className="bg-white p-6 rounded-xl shadow-xl min-w-[90vw] max-w-xs flex flex-col gap-4"
+            style={{
+              background: "#fff",
+              padding: 32,
+              borderRadius: 14,
+              boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
+              minWidth: 320,
+              display: "flex",
+              flexDirection: "column",
+              gap: 16
+            }}
           >
-            <h2 className="font-bold text-lg mb-2">Edit Redirect</h2>
+            <h2 style={{ fontWeight: 700, fontSize: 20, marginBottom: 8 }}>Edit Redirect</h2>
             <input
               type="url"
               value={newDest}
               onChange={e => setNewDest(e.target.value)}
               required
-              className="px-4 py-3 rounded-lg border border-gray-200 text-base outline-none bg-slate-50 focus:ring-2 focus:ring-blue-200"
+              style={{
+                padding: "12px 14px",
+                borderRadius: 8,
+                border: "1px solid #e5e7eb",
+                fontSize: 16,
+                outline: "none",
+                background: "#f9fafb"
+              }}
             />
-            {error && <div className="text-rose-600 text-sm">{error}</div>}
-            <div className="flex gap-2 justify-end">
+            {error && <div style={{ color: "#e11d48", fontSize: 15 }}>{error}</div>}
+            <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
               <button
                 type="button"
                 onClick={() => setShowEdit(false)}
-                className="bg-slate-100 text-gray-800 rounded px-4 py-2 font-medium text-sm hover:bg-slate-200 transition"
+                style={{
+                  background: "#f1f5f9",
+                  color: "#222",
+                  border: "none",
+                  borderRadius: 6,
+                  padding: "8px 18px",
+                  fontWeight: 500,
+                  cursor: "pointer",
+                  fontSize: 15,
+                  transition: "background 0.2s"
+                }}
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={saving}
-                className="bg-blue-600 hover:bg-blue-700 text-white rounded px-4 py-2 font-medium text-sm transition disabled:opacity-60 disabled:cursor-not-allowed"
+                style={{
+                  background: "#2563eb",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 6,
+                  padding: "8px 18px",
+                  fontWeight: 500,
+                  cursor: saving ? "not-allowed" : "pointer",
+                  fontSize: 15,
+                  transition: "background 0.2s"
+                }}
+                onMouseOver={e => (e.currentTarget.style.background = "#1d4ed8")}
+                onMouseOut={e => (e.currentTarget.style.background = "#2563eb")}
               >
                 {saving ? "Saving..." : "Save"}
               </button>
