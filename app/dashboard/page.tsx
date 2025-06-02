@@ -215,7 +215,7 @@ function QRCodeItem({ qr }: { qr: any }) {
       const url = canvas.toDataURL("image/png");
       const a = document.createElement("a");
       a.href = url;
-      a.download = `qr_${qr.serial_number}.png`;
+      a.download = `que-r.org_${qr.serial_number}.png`;
       a.click();
       setDownloading(false);
     };
