@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import { generateQRCode } from "@/utils/qr";
 
+export const viewport = "width=device-width, initial-scale=1";
+
 function randomShortUrl(length = 6) {
   const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let result = "";
@@ -206,10 +208,10 @@ function QRCodeItem({ qr }: { qr: any }) {
       ctx.fillStyle = "#fff";
       ctx.fillRect(0, 0, width, height);
       ctx.drawImage(img, 0, 0);
-      ctx.font = "bold 18px sans-serif";
+      ctx.font = "bold 35px sans-serif";
       ctx.fillStyle = "#222";
       ctx.textAlign = "center";
-      ctx.fillText(`Serial: ${qr.serial_number}`, width / 2, height - 8);
+      ctx.fillText(`que-r.org: ${qr.serial_number}`, width / 2, height - 25);
       const url = canvas.toDataURL("image/png");
       const a = document.createElement("a");
       a.href = url;
@@ -247,7 +249,7 @@ function QRCodeItem({ qr }: { qr: any }) {
           <b>Destination:</b> {qr.destination_url}
         </div>
         <div>
-          <b>Serial #:</b> {qr.serial_number}
+          <b>QR id:</b> {qr.serial_number}
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
