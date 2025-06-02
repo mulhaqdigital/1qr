@@ -16,13 +16,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" type="image/x-icon"/> 
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
-     </head>
+      </head>
       <body>
-        <NavBar />
         <AuthProvider>
-        {children}
+          <NavBar />
+          {children}
         </AuthProvider>
       </body>
     </html>
