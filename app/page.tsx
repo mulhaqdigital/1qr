@@ -49,7 +49,7 @@ export default function Home() {
               color: "#1e293b",
             }}
           >
-            Permanent, Editable
+            Permanent, Editable, Dynamic
             <span
               style={{
                 background: "linear-gradient(90deg, #2563eb 0%, #a855f7 100%)",
