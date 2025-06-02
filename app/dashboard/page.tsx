@@ -322,7 +322,7 @@ function QRCodeItem({ qr }: { qr: any }) {
           onMouseOver={e => (e.currentTarget.style.background = "#1d4ed8")}
           onMouseOut={e => (e.currentTarget.style.background = "#2563eb")}
         >
-          Open Redirect
+          Test Redirect
         </a>
       </div>
       {showEdit && (
