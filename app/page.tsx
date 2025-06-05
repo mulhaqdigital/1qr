@@ -31,7 +31,7 @@ export default function Home() {
             position: "relative",
             zIndex: 1,
             maxWidth: 700,
-            margin: "0 auto",
+            margin: "0 12px",
             textAlign: "center",
             background: "rgba(255,255,255,0.95)",
             borderRadius: 20,
@@ -118,7 +118,7 @@ export default function Home() {
                 borderRadius: 16,
                 boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
                 padding: 32,
-                margin: "12px 0"
+                margin: "1px 20px"
               }}>
                 <div style={{
                   width: 48,
