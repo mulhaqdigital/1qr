@@ -165,10 +165,18 @@ function QRCodeItem({ qr }: { qr: any }) {
   const [deleting, setDeleting] = useState(false);
   const [downloading, setDownloading] = useState(false);
   const [refresh, setRefresh] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     generateQRCode(`${window.location.origin}/qr/${qr.short_url}`).then(setQrImg);
   }, [qr.short_url, refresh]);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 600);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   async function handleEdit(e: React.FormEvent) {
     e.preventDefault();
@@ -225,7 +233,8 @@ function QRCodeItem({ qr }: { qr: any }) {
     <div
       style={{
         display: "flex",
-        alignItems: "center",
+        flexDirection: isMobile ? "column" : "row",
+        alignItems: isMobile ? "stretch" : "center",
         gap: 18,
         border: "1px solid #e5e7eb",
         borderRadius: 14,
@@ -241,7 +250,7 @@ function QRCodeItem({ qr }: { qr: any }) {
       <div style={{ flex: 1 }}>
         <div>
           <b>Short URL:</b>{" "}
-          <a href={`/qr/${qr.short_url}`} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>
+          <a href={`/qr/${qr.short_url}`} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline", wordBreak: "break-all" }}>
             {window.location.origin}/qr/{qr.short_url}
           </a>
         </div>
@@ -251,82 +260,186 @@ function QRCodeItem({ qr }: { qr: any }) {
         <div>
           <b>QR id:</b> {qr.serial_number}
         </div>
+        {isMobile && (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 12,
+              marginTop: 18,
+              width: "100%"
+            }}
+          >
+            <button
+              onClick={() => setShowEdit(true)}
+              style={{
+                background: "#f1f5f9",
+                color: "#222",
+                border: "none",
+                borderRadius: 8,
+                padding: "14px 0",
+                fontWeight: 600,
+                cursor: "pointer",
+                fontSize: 17,
+                width: "100%",
+                transition: "background 0.2s"
+              }}
+              onMouseOver={e => (e.currentTarget.style.background = "#e0e7ef")}
+              onMouseOut={e => (e.currentTarget.style.background = "#f1f5f9")}
+            >
+              Edit
+            </button>
+            <button
+              onClick={handleDelete}
+              disabled={deleting}
+              style={{
+                background: "#fee2e2",
+                color: "#b91c1c",
+                border: "none",
+                borderRadius: 8,
+                padding: "14px 0",
+                fontWeight: 600,
+                cursor: deleting ? "not-allowed" : "pointer",
+                fontSize: 17,
+                width: "100%",
+                transition: "background 0.2s"
+              }}
+            >
+              {deleting ? "Deleting..." : "Delete"}
+            </button>
+            <button
+              onClick={handleDownload}
+              disabled={downloading}
+              style={{
+                background: "#f1f5f9",
+                color: "#222",
+                border: "none",
+                borderRadius: 8,
+                padding: "14px 0",
+                fontWeight: 600,
+                cursor: downloading ? "not-allowed" : "pointer",
+                fontSize: 17,
+                width: "100%",
+                transition: "background 0.2s"
+              }}
+            >
+              {downloading ? "Downloading..." : "Download PNG"}
+            </button>
+            <a
+              href={qr.destination_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                background: "#2563eb",
+                color: "#fff",
+                borderRadius: 8,
+                padding: "14px 0",
+                fontWeight: 600,
+                textAlign: "center",
+                textDecoration: "none",
+                fontSize: 17,
+                width: "100%",
+                transition: "background 0.2s",
+                display: "block"
+              }}
+              onMouseOver={e => (e.currentTarget.style.background = "#1d4ed8")}
+              onMouseOut={e => (e.currentTarget.style.background = "#2563eb")}
+            >
+              Test Redirect
+            </a>
+          </div>
+        )}
       </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        <button
-          onClick={() => setShowEdit(true)}
+      {!isMobile && (
+        <div
           style={{
-            background: "#f1f5f9",
-            color: "#222",
-            border: "none",
-            borderRadius: 6,
-            padding: "7px 16px",
-            fontWeight: 500,
-            cursor: "pointer",
-            fontSize: 15,
-            marginBottom: 2,
-            transition: "background 0.2s"
+            display: "flex",
+            flexDirection: "column",
+            gap: 10,
+            marginLeft: 18,
+            alignItems: "stretch",
+            minWidth: 140
           }}
         >
-          Edit
-        </button>
-        <button
-          onClick={handleDelete}
-          disabled={deleting}
-          style={{
-            background: "#fee2e2",
-            color: "#b91c1c",
-            border: "none",
-            borderRadius: 6,
-            padding: "7px 16px",
-            fontWeight: 500,
-            cursor: deleting ? "not-allowed" : "pointer",
-            fontSize: 15,
-            marginBottom: 2,
-            transition: "background 0.2s"
-          }}
-        >
-          {deleting ? "Deleting..." : "Delete"}
-        </button>
-        <button
-          onClick={handleDownload}
-          disabled={downloading}
-          style={{
-            background: "#f1f5f9",
-            color: "#222",
-            border: "none",
-            borderRadius: 6,
-            padding: "7px 16px",
-            fontWeight: 500,
-            cursor: downloading ? "not-allowed" : "pointer",
-            fontSize: 15,
-            marginBottom: 2,
-            transition: "background 0.2s"
-          }}
-        >
-          {downloading ? "Downloading..." : "Download PNG"}
-        </button>
-        <a
-          href={qr.destination_url}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            background: "#2563eb",
-            color: "#fff",
-            borderRadius: 6,
-            padding: "7px 16px",
-            fontWeight: 500,
-            textAlign: "center",
-            textDecoration: "none",
-            fontSize: 15,
-            transition: "background 0.2s"
-          }}
-          onMouseOver={e => (e.currentTarget.style.background = "#1d4ed8")}
-          onMouseOut={e => (e.currentTarget.style.background = "#2563eb")}
-        >
-          Test Redirect
-        </a>
-      </div>
+          <button
+            onClick={() => setShowEdit(true)}
+            style={{
+              background: "#f1f5f9",
+              color: "#222",
+              border: "none",
+              borderRadius: 8,
+              padding: "12px 0",
+              fontWeight: 600,
+              cursor: "pointer",
+              fontSize: 16,
+              width: "100%",
+              transition: "background 0.2s"
+            }}
+            onMouseOver={e => (e.currentTarget.style.background = "#e0e7ef")}
+            onMouseOut={e => (e.currentTarget.style.background = "#f1f5f9")}
+          >
+            Edit
+          </button>
+          <button
+            onClick={handleDelete}
+            disabled={deleting}
+            style={{
+              background: "#fee2e2",
+              color: "#b91c1c",
+              border: "none",
+              borderRadius: 8,
+              padding: "12px 0",
+              fontWeight: 600,
+              cursor: deleting ? "not-allowed" : "pointer",
+              fontSize: 16,
+              width: "100%",
+              transition: "background 0.2s"
+            }}
+          >
+            {deleting ? "Deleting..." : "Delete"}
+          </button>
+          <button
+            onClick={handleDownload}
+            disabled={downloading}
+            style={{
+              background: "#f1f5f9",
+              color: "#222",
+              border: "none",
+              borderRadius: 8,
+              padding: "12px 0",
+              fontWeight: 600,
+              cursor: downloading ? "not-allowed" : "pointer",
+              fontSize: 16,
+              width: "100%",
+              transition: "background 0.2s"
+            }}
+          >
+            {downloading ? "Downloading..." : "Download PNG"}
+          </button>
+          <a
+            href={qr.destination_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              background: "#2563eb",
+              color: "#fff",
+              borderRadius: 8,
+              padding: "12px 0",
+              fontWeight: 600,
+              textAlign: "center",
+              textDecoration: "none",
+              fontSize: 16,
+              width: "100%",
+              transition: "background 0.2s",
+              display: "block"
+            }}
+            onMouseOver={e => (e.currentTarget.style.background = "#1d4ed8")}
+            onMouseOut={e => (e.currentTarget.style.background = "#2563eb")}
+          >
+            Test Redirect
+          </a>
+        </div>
+      )}
       {showEdit && (
         <div
           style={{
