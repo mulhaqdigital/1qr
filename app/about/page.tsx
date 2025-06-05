@@ -7,9 +7,9 @@ export default function AboutPage() {
       <div style={{ maxWidth: 700, margin: "0 auto", background: "#fff", borderRadius: 18, boxShadow: "0 4px 24px rgba(0,0,0,0.07)", padding: 40 }}>
         <div style={{ marginBottom: 24, textAlign: "center" }}>
           <div style={{ fontSize: 44, marginBottom: 8 }}>ℹ️</div>
-          <h1 style={{ fontSize: 30, fontWeight: 800, marginBottom: 8, color: "#2563eb" }}>About 1QR – Permanent QR Code</h1>
+          <h1 style={{ fontSize: 30, fontWeight: 800, marginBottom: 8, color: "#2563eb" }}>About 1QR – Reusable QR Code</h1>
           <p style={{ color: "#555", fontSize: 18, marginBottom: 0 }}>
-            1QR – Permanent QR Code is a dynamic QR code management platform designed to make QR codes permanent, editable, and reliable.
+            1QR – Reusable QR Code is a dynamic QR code management platform designed to make QR codes permanent, editable, and reliable.
           </p>
         </div>
         <div style={{ marginBottom: 28, color: "#444", fontSize: 16, lineHeight: 1.7 }}>
