@@ -104,7 +104,7 @@ export default function Home() {
         <div style={{ maxWidth: 1100, margin: "0 auto", textAlign: "center" }}>
           <h2 style={{ fontSize: 32, fontWeight: 700, marginBottom: 12, color: "#1e293b" }}>How It Works</h2>
           <p style={{ color: "#666", marginBottom: 36, fontSize: 18 }}>Get started in just a few simple steps.</p>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 32, justifyContent: "center" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 10, margin: "0 10px", justifyContent: "center" }}>
             {[
               { step: 1, title: "Generate", desc: "Create a QR code with a unique serial number and short URL." },
               { step: 2, title: "Edit", desc: "Change the redirect URL anytime—your QR code image stays the same." },
@@ -118,7 +118,7 @@ export default function Home() {
                 borderRadius: 16,
                 boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
                 padding: 32,
-                margin: "1px 20px"
+                margin: "1px 1px"
               }}>
                 <div style={{
                   width: 48,
